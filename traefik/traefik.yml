@@ -1,0 +1,49 @@
+api:
+  dashboard: true
+
+entryPoints:
+  web:
+    address: :80
+
+  mariadb:
+    address: :3306
+
+  rabbitmq:
+    address: :5672
+
+  elasticsearch:
+    address: :9200
+
+  redis:
+    address: :6379
+
+  mailhog1:
+    address: :1025
+
+  mailhog2:
+    address: :8025
+
+  websecure:
+    address: :443
+    http:
+      middlewares:
+        - secureHeaders@file
+      tls:
+        certResolver: letsencrypt
+
+providers:
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+    exposedByDefault: false
+    network: proxy
+    swarmModeRefreshSeconds: 5
+
+
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      email: danandrei.rotariu@mtc.co.uk
+      storage: acme.json
+      keyType: EC384
+      httpChallenge:
+        entryPoint: web
